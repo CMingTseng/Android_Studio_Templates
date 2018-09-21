@@ -1,27 +1,28 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    <#if includeKotlinSupport!false>ext.kotlin_version = '${kotlinVersion}'</#if>
+
+    ext {
+                javasource = JavaVersion.VERSION_1_8
+                javatarget = JavaVersion.VERSION_1_8
+               <#if includeKotlinSupport!false>kotlin_version = '${kotlinVersion}'</#if>
+                compileVersion = 27
+                targetVersion = 27
+                minVersion = 21
+                buildVersion = '28.0.2'
+                supportLibVersion = '27.1.1'
+                lifecycleLibVersion = '1.1.1'
+                runnerVersion = '0.5'
+                rulesVersion = '0.5'
+                UiAutomatorLibVersion = '2.1.2'
+                FirebaseLibVersion = '11.8.0'
+                versionName = '0.0.0'
+                protobufVersion = '3.6.1'
+                grpcVersion = '1.14.0' // CURRENT_GRPC_VERSION
+                nettyTcNativeVersion = '2.0.7.Final'
+            }
     repositories {
-        ext {
-            javasource = JavaVersion.VERSION_1_8
-            javatarget = JavaVersion.VERSION_1_8
-            kotlin_version = '1.2.70'
-            compileVersion = 27
-            targetVersion = 27
-            minVersion = 21
-            buildVersion = '28.0.2'
-            supportLibVersion = '27.1.1'
-            lifecycleLibVersion = '1.1.1'
-            runnerVersion = '0.5'
-            rulesVersion = '0.5'
-            UiAutomatorLibVersion = '2.1.2'
-            FirebaseLibVersion = '11.8.0'
-            versionName = '0.0.0'
-            protobufVersion = '3.6.1'
-            grpcVersion = '1.14.0' // CURRENT_GRPC_VERSION
-            nettyTcNativeVersion = '2.0.7.Final'
-        }
+
         maven { url "https://maven.google.com" }
         google()
         jcenter()
