@@ -23,13 +23,18 @@ dependencies {
     implementation "com.android.support:support-annotations:$supportLibVersion"
     implementation "com.android.support:support-core-utils:$supportLibVersion"
     implementation "com.android.support:support-v4:$supportLibVersion"
-    implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation "com.android.support:design:$supportLibVersion"
     implementation "com.android.support:cardview-v7:$supportLibVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibVersion"
     implementation "com.android.support:gridlayout-v7:$supportLibVersion"
     implementation "com.android.support:support-v13:$supportLibVersion"
-     implementation "com.android.support:support-vector-drawable:$supportLibVersion"
+    implementation "com.android.support:support-vector-drawable:$supportLibVersion"
+    implementation "com.android.support:support-core-ui:$supportLibVersion"
+    implementation "com.android.support:support-compat:$supportLibVersion"
+    implementation "com.android.support:support-core-utils:$supportLibVersion"
+
+    implementation "com.android.support:palette-v7:$supportLibVersion"
+    implementation "com.android.support:exifinterface:$supportLibVersion"
 
     <@kt.addKotlinDependencies />
 <#if isInstantApp>

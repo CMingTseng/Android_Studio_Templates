@@ -71,6 +71,7 @@ sourceSets {
             aidl.srcDirs = ['src/main/aidl']
             res.srcDirs = ['src/main/res']
             assets.srcDirs = ['src/main/assets']
+            jniLibs.srcDirs = [ ]
         }
 
         test {
@@ -94,7 +95,7 @@ sourceSets {
         packagingOptions {
         exclude 'META-INF/INDEX.LIST'
         exclude 'META-INF/io.netty.versions.properties'
-	exclude 'META-INF/ASL2.0'
+	    exclude 'META-INF/ASL2.0'
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/DEPENDENCIES.txt'
