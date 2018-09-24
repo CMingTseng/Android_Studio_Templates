@@ -21,12 +21,18 @@
 </manifest></#if>
 </#macro>
 
-<#macro androidConfig hasApplicationId=false applicationId='' hasTests=false canHaveCpp=false isBaseFeature=false>
+<#macro androidConfig hasApplicationId=false applicationId='' hasTests=false canHaveCpp=false isBaseFeature=false canUseProguard=false>
 android {
 //    compileSdkVersion <#if buildApiString?matches("^\\d+$")>${buildApiString}<#else>'${buildApiString}'</#if>
-//    buildToolsVersion "${buildToolsVersion}" 
+//    buildToolsVersion "${buildToolsVersion}"
     compileSdkVersion compileVersion
     buildToolsVersion buildVersion
+    lintOptions {
+           abortOnError false
+           //disable "ResourceType"
+           //disable 'MissingTranslation'
+           checkReleaseBuilds false
+    }
     <#if isBaseFeature>
     baseFeature true
     </#if>
@@ -39,11 +45,11 @@ android {
       //  targetSdkVersion <#if targetApiString?matches("^\\d+$")>${targetApiString}<#else>'${targetApiString}'</#if>
         minSdkVersion minVersion
         targetSdkVersion targetVersion
-	versionCode 1
+        versionCode 1
         versionName "1.0"
 
     <#if hasTests>
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "${getMaterialComponentName('android.support.test.runner.AndroidJUnitRunner', useAndroidX)}"
     </#if>
 
     <#if canHaveCpp && (includeCppSupport!false)>
@@ -54,8 +60,31 @@ android {
         }
     </#if>
     }
- 
+compileOptions {
+        sourceCompatibility javasource
+        targetCompatibility javatarget
+    }
+
+    packagingOptions {
+            exclude 'META-INF/INDEX.LIST'
+            exclude 'META-INF/io.netty.versions.properties'
+    	    exclude 'META-INF/ASL2.0'
+            exclude 'META-INF/DEPENDENCIES'
+            exclude 'META-INF/dependencies.txt'
+            exclude 'META-INF/DEPENDENCIES.txt'
+            exclude 'META-INF/LGPL2.1'
+            exclude 'META-INF/LICENSE'
+            exclude 'META-INF/license.txt'
+            exclude 'META-INF/LICENSE.txt'
+            exclude 'META-INF/NOTICE'
+            exclude 'META-INF/notice.txt'
+            exclude 'META-INF/NOTICE.txt'
+    }
+
+<#if canUseProguard>
 <@proguard.proguardConfig />
+</#if>
+
 <#if canHaveCpp && (includeCppSupport!false)>
     externalNativeBuild {
         cmake {
@@ -63,15 +92,13 @@ android {
         }
     }
 </#if>
-
-sourceSets {
+    sourceSets {
         main {
             manifest.srcFile 'src/main/AndroidManifest.xml'
-            java.srcDirs = ['src/main/java']
+            java.srcDirs = ['src/main/java', 'src/main/kotlin/']
             aidl.srcDirs = ['src/main/aidl']
             res.srcDirs = ['src/main/res']
             assets.srcDirs = ['src/main/assets']
-            jniLibs.srcDirs = [ ]
         }
 
         test {
@@ -86,44 +113,6 @@ sourceSets {
                 srcDir 'src/androidTest/kotlin/'
             }
         }
-    }
-
- compileOptions {
-        sourceCompatibility javasource
-        targetCompatibility javatarget
-    }
-        packagingOptions {
-        exclude 'META-INF/INDEX.LIST'
-        exclude 'META-INF/io.netty.versions.properties'
-	    exclude 'META-INF/ASL2.0'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/NOTICE.txt'
-    }
-}
-
-configurations.all {
-    resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
-    resolutionStrategy {
-        force "com.android.support:support-annotations:$supportLibVersion"
-        force "com.android.support:support-core-utils:$supportLibVersion"
-        force "com.android.support:support-v4:$supportLibVersion"
-        force "com.android.support:appcompat-v7:$supportLibVersion"
-        force "com.android.support:design:$supportLibVersion"
-        force "com.android.support:cardview-v7:$supportLibVersion"
-        force "com.android.support:recyclerview-v7:$supportLibVersion"
-        force "com.android.support:gridlayout-v7:$supportLibVersion"
-        force "com.android.support:support-v13:$supportLibVersion"
-	force "com.android.support:support-vector-drawable:$supportLibVersion"
-        failOnVersionConflict()
-        preferProjectModules()
     }
 }
 </#macro>
